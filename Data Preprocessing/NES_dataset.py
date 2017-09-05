@@ -53,21 +53,14 @@ for line in feature_sentences:
 	ans2 = ' '.join(list(map(str.strip, answers_dev2[counter_ans].lower().split(" "))))
 	ans3 = ' '.join(list(map(str.strip, answers_dev3[counter_ans].lower().split(" "))))
 	if len(ner_list) > 0:		
-		for elem in ner_list:
-			f.write(' '.join(my_sent).rstrip() + "@~@")	
+		for elem in ner_list:	
 			for x in find_sub_list(elem.split(" "),my_sent):
+				f.write(' '.join(my_sent).rstrip() + "@~@")
 				f.write(str(x[0]) + "," + str(x[1]) + "@~@")
-			print(elem)
-			print(str(ans1) + "\t" + str(ans2) + "\t" + str(ans3))
-			# print(counter_ans)
-			# print("------------")
-			if SequenceMatcher(None,elem,ans1).ratio() > 0.5 or SequenceMatcher(None,elem,ans2).ratio() > 0.5 or SequenceMatcher(None,elem,ans3).ratio() > 0.5 or elem in ans1 or elem in ans2 or elem in ans3:
-				f.write("1\n")
-				print("1")
-			else:
-				f.write("0\n")
-				print("0")
-			print("--------------")	
+				if SequenceMatcher(None,elem,ans1).ratio() > 0.5 or SequenceMatcher(None,elem,ans2).ratio() > 0.5 or SequenceMatcher(None,elem,ans3).ratio() > 0.5 or elem in ans1 or elem in ans2 or elem in ans3:
+					f.write("1\n")
+				else:
+					f.write("0\n")
 	curr_index = curr_index + 1
 	try:
 		counter_ans = counter_checker_extra.index(counter_checker_trim[curr_index].rstrip())			
