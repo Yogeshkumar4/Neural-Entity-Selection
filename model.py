@@ -123,6 +123,7 @@ for line in f:
 
 x = np.array(list(vocab_processor.transform(answers)))
 lens = [min(len(elem.split(" ")),max_document_length) for elem in answers]
+saver = tf.train.Saver()
 with tf.Session() as sess:
     sess.run(init)
     sess.run(embedding_init, feed_dict={embedding_placeholder: embedding})
@@ -143,5 +144,6 @@ with tf.Session() as sess:
             mlp_input = np.concatenate((till_now, to_calc), axis=1)
             _, curr_loss = sess.run([train_op, loss_op], feed_dict={X:mlp_input, Y:batchy})
         if i%display_step == 0:
-            print("Epoch:{0}\tTraining Loss:{1}".format(i, training_loss/len(x)))    
+            print("Epoch:{0}\tTraining Loss:{1}".format(i, training_loss/len(x)))   
+    saver.save(sess, 'my-model')         
     
