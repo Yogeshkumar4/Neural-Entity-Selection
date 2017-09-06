@@ -157,6 +157,7 @@ with tf.Session() as sess:
                     to_calc[k] = np.mean(enc_outputs[k][np.ix_(batchner_length[k],range(encoder_hidden_units))],0)
                 mlp_input = np.concatenate((till_now, to_calc), axis=1)
                 _, curr_loss = sess.run([train_op, loss_op], feed_dict={X:mlp_input, Y:batchy})
+                training_loss += curr_loss
             if i%display_step == 0:
                 print("Epoch:{0}\tTraining Loss:{1}".format(i, training_loss/len(x)))   
         saver.save(sess, 'my-model') 
@@ -181,6 +182,7 @@ with tf.Session() as sess:
                 else:
                     max_score[item] = predictions[0][elem][0]
                     my_ner[item] = batchner_length[elem]
+            print(my_ner)        
         f1 = open("src-test-features.txt","r").readlines()
         f2 = open("test_sentences.txt","r").readlines()
         modified_file = open("new_encoding.txt","w")
